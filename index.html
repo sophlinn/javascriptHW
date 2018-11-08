@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+border:2px solid #d3d3d3;
+background-color: #f1f1f1;
+}
+</style>
+</head>
+<body></body>
+    <canvas id='canvas'>
+    Sorry, your browser does not support this feature.
+    </canvas>
+<script>
+
+//Variables//
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var radius = 10;
+var dragging = true;
+
+//Canvas Height and Width and Line Width//
+canvas.width = 800;
+canvas.height = 500;
+context.lineWidth = radius*2;
+context.fillStyle = 'black';
+
+
+//Defining Variables//
+var draw = function(e){
+    if(dragging){
+        context.lineTo(e.clientX,e.clientY);
+        // context.stroke();
+        context.beginPath();
+        context.arc(e.clientX,e.clientY,radius,0,Math.PI*2);
+        context.fill();
+        context.beginPath();
+        context.moveTo(e.clientX,e.clientY);
+    }
+}
+
+var engage = function(){
+    dragging = true;
+}
+
+//Add Event Listeners//
+canvas.addEventListener('mousedown',engage);
+canvas.addEventListener('mousemove', draw);
+
+//Changing Colors and Width//
+window.addEventListener('keydown', function(e){
+    if(e.keyCode == 66) {
+        context.fillStyle = 'blue';
+    }
+    else if(e.keyCode == 71) {
+        context.fillStyle = 'green';
+    }
+    else if(e.keyCode == 82) {
+        context.fillStyle = 'red';
+    }
+    else if(e.keyCode == 89) {
+        context.fillStyle = 'yellow';
+    }
+    if(e.keyCode == 38) {
+        radius = radius +2;
+        e.preventDefault();
+    }
+    else if(e.keyCode == 40) {
+        if (radius >2)
+            radius = radius -2;
+        e.preventDefault();
+    }
+    if(e.keyCode == 32) {
+        context.clearRect(0,0,canvas.width, canvas.height);
+        e.preventDefault();
+    }
+
+});
+
+</script>
+<p>Move to start drawing.</p>
+<p>"b" - change pen color to blue</p>
+<p>"g" - change pen color to green</p>
+<p>"r" - change pen color to red</p>
+<p>"y" - change pen color to yellow</p>
+<p>"up arrow" - make pen size larger</p>
+<p>"down arrow" - make pen size smaller</p>
+<p>"space bar" - clear the canvas (other than the current pen tip)</p>
+</body>
+</html>
